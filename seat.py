@@ -130,4 +130,4 @@ def plot_seats_with_pairs(points, occupied, ax):
     ax.add_patch(patches.Rectangle((hrv_x - 0.2, hrv_y - 0.2), 0.4, 0.4,
                                    fill=True, facecolor=color,
                                    edgecolor='black', linewidth=1.2, zorder=4))
-    ax.text(hrv_x, hrv_y, label, ha='center', va='center', fontsize=5, zorder=5)
+    ax.text(hrv_x, hrv_y, label, ha='center', va='center', fontsize=4, zorder=5)
