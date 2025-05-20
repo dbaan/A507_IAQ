@@ -114,9 +114,7 @@ def plot_seats_with_pairs(points, occupied, ax):
     try:
         resp = requests.get(api_urls['hrv']).json()
         last = resp['feeds'][-1]
-        ta   = last.get('field1', ta)
         co2  = last.get('field4', co2)
-        pm   = last.get('field3', pm)
         ts   = last.get('created_at')
         if ts:
             recv_time_hrv = ts.split("T")[1].replace("Z","")
