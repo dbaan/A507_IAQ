@@ -96,25 +96,41 @@ def plot_seats_with_pairs(points, occupied, ax):
 
     # 3) HRV 3등분 박스
     hrv_x,hrv_y = points['hrv']
-    off_x, w = -1.5, 1.2
-    cw = w/3; ys = hrv_y - height/2
-    ax.add_patch(patches.Rectangle((hrv_x+off_x, ys), w, height,
+    hrv_off_x, hrv_w = -1.5, 1.2
+    cw = hrv_w / 3
+    ys = hrv_y - h / 2
+
+    ax.add_patch(patches.Rectangle((hrv_x + hrv_off_x, ys),
+                                   hrv_w, h,
                                    fill=False, edgecolor='black', linewidth=1.2, zorder=1))
     for i in (1,2):
-        ax.plot([hrv_x+off_x+cw*i]*2, [ys, ys+height], color='black', linewidth=1.0, zorder=1)
+        ax.plot([hrv_x+off_x+cw*i]*2,
+                [ys, ys + h],
+                color='black', linewidth=1.0, zorder=1)
+
     ta=co2=pm="N/A"
+    recv_time_hrv = "N/A"
     try:
-        last = requests.get(api_urls['hrv']).json()['feeds'][-1]
+        resp = requests.get(api_urls['hrv']).json()
+        last = resp['feeds'][-1]
         ta  = last.get('field1',ta)
         co2 = last.get('field4',co2)
         pm  = last.get('field3',pm)
+        ts = last.get('created_at', None)
+        if ts:
+            recv_time_hrv = ts.split("T")[1].replace("Z", "")
     except:
         pass
+
     yt = hrv_y
     ax.text(hrv_x+off_x+cw*0.5, yt, f"{ta}", ha='center', va='center', fontsize=5, zorder=2)
     ax.text(hrv_x+off_x+cw*1.5, yt, f"{co2}", ha='center', va='center', fontsize=5, zorder=2)
     ax.text(hrv_x+off_x+cw*2.5, yt, f"{pm}", ha='center', va='center', fontsize=5, zorder=2)
 
+    for i in range(3):
+        tx = hrv_x + hrv_off_x + cw * (i + 0.5)
+        ax.text(tx, ys - 0.02, recv_time_hrv,
+                ha='center', va='top', fontsize=5, color='gray', zorder=2)
 
     # 4) HRV 작은 풍량 박스 (always on)
     # 수정된 4) HRV 작은 풍량 박스 부분 (field1 값이 실수 문자열일 때도 처리)
@@ -141,6 +157,9 @@ def plot_seats_with_pairs(points, occupied, ax):
                                    fill=True, facecolor=color,
                                    edgecolor='black', linewidth=1.2, zorder=4))
     ax.text(hrv_x, hrv_y, label, ha='center', va='center', fontsize=5, zorder=5)
+
+    ax.text(hrv_x, hrv_y - 0.25, recv_time_hrv,
+            ha='center', va='top', fontsize=5, color='gray', zorder=6)
 
     # 5) 범례 추가 (오른쪽 하단)
     legend_ax = ax.figure.add_axes([0.40, 0.02, 0.3, 0.12])
