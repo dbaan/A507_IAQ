@@ -133,7 +133,7 @@ def plot_seats_with_pairs(points, occupied, ax):
     ax.text(hrv_x, hrv_y, label, ha='center', va='center', fontsize=5, zorder=5)
 
     # 5) 범례 추가 (오른쪽 하단)
-    legend_ax = ax.figure.add_axes([0.60, 0.02, 0.3, 0.12])
+    legend_ax = ax.figure.add_axes([0.40, 0.02, 0.3, 0.12])
     legend_ax.axis('off')
     from matplotlib.patches import Rectangle as LegRect
     lw, lh = 0.8, 0.3
