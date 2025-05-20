@@ -71,18 +71,28 @@ def plot_seats_with_pairs(points, occupied, ax):
         for i in (1,2):
             ax.plot([xs+cw*i]*2, [ys, ys+height], color='black', linewidth=1.0, zorder=1)
         # API
-        ta=co2=pm="N/A"
+        ta = co2 = pm = "N/A"
+        recv_time = "N/A"
         try:
-            last = requests.get(api_urls[pair]).json()['feeds'][-1]
-            ta  = last.get('field1',ta)
-            co2 = last.get('field4',co2)
-            pm  = last.get('field3',pm)
+            resp = requests.get(api_urls[pair]).json()
+            last = resp['feeds'][-1]
+            ta = last.get('field1', ta)
+            co2 = last.get('field4', co2)
+            pm = last.get('field3', pm)
+            ts = last.get('created_at', None)
+            if ts:
+                recv_time = ts.split("T")[1].replace("Z", "")  # "04:15:28"
         except:
             pass
+
+
         yt = ys+height/2
         ax.text(xs+cw*0.5, yt, f"{ta}", ha='center', va='center', fontsize=5, zorder=2)
         ax.text(xs+cw*1.5, yt, f"{co2}", ha='center', va='center', fontsize=5, zorder=2)
         ax.text(xs+cw*2.5, yt, f"{pm}", ha='center', va='center', fontsize=5, zorder=2)
+
+        ax.text(xs + width + 0.02, ys, recv_time,
+                ha='left', va='bottom', fontsize=5, color='gray', zorder=2)
 
     # 3) HRV 3등분 박스
     hrv_x,hrv_y = points['hrv']
