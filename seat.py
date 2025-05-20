@@ -95,67 +95,74 @@ def plot_seats_with_pairs(points, occupied, ax):
                 ha='left', va='bottom', fontsize=5, color='gray', zorder=2)
 
     # 3) HRV 3등분 박스 + 값·수신 시간
-    hrv_x, hrv_y   = points['hrv']
+    hrv_x, hrv_y = points['hrv']
     hrv_off_x, hrv_w = -1.5, 1.2
-    cw             = hrv_w / 3
-    ys             = hrv_y - height/2
+    cw = hrv_w / 3
+    ys = hrv_y - height / 2
 
-    ax.add_patch(patches.Rectangle((hrv_x+hrv_off_x, ys),
+    ax.add_patch(patches.Rectangle((hrv_x + hrv_off_x, ys),
                                    hrv_w, height,
                                    fill=False, edgecolor='black',
                                    linewidth=1.2, zorder=1))
-    for i in (1,2):
-        ax.plot([hrv_x+hrv_off_x+cw*i]*2,
-                [ys, ys+height],
+    for i in (1, 2):
+        ax.plot([hrv_x + hrv_off_x + cw * i] * 2,
+                [ys, ys + height],
                 color='black', linewidth=1, zorder=1)
 
+    # HRV API 호출 값 & 시간
     ta = co2 = pm = "N/A"
     recv_time_hrv = "N/A"
     try:
         resp = requests.get(api_urls['hrv']).json()
         last = resp['feeds'][-1]
-        ta   = last.get('field1', ta)
-        co2  = last.get('field4', co2)
-        pm   = last.get('field3', pm)
-        ts   = last.get('created_at')
+        ta = last.get('field1', ta)
+        co2 = last.get('field4', co2)
+        pm = last.get('field3', pm)
+        ts = last.get('created_at')
         if ts:
-            recv_time_hrv = ts.split("T")[1].replace("Z","")
+            recv_time_hrv = ts.split("T")[1].replace("Z", "")
     except:
         pass
 
     # 값 표시
-    ax.text(hrv_x+hrv_off_x+cw*0.5, hrv_y, f"{ta}",  ha='center', va='center', fontsize=5, zorder=2)
-    ax.text(hrv_x+hrv_off_x+cw*1.5, hrv_y, f"{co2}", ha='center', va='center', fontsize=5, zorder=2)
-    ax.text(hrv_x+hrv_off_x+cw*2.5, hrv_y, f"{pm}",  ha='center', va='center', fontsize=5, zorder=2)
+    ax.text(hrv_x + hrv_off_x + cw * 0.5, hrv_y, f"{ta}",
+            ha='center', va='center', fontsize=5, zorder=2)
+    ax.text(hrv_x + hrv_off_x + cw * 1.5, hrv_y, f"{co2}",
+            ha='center', va='center', fontsize=5, zorder=2)
+    ax.text(hrv_x + hrv_off_x + cw * 2.5, hrv_y, f"{pm}",
+            ha='center', va='center', fontsize=5, zorder=2)
 
-    # 수신 시간 (3등분 박스 아래)
-    center_x = hrv_x + hrv_off_x + hrv_w/2
+    # ── 여기부터 수정된 부분 ──
+    # 수신 시간 (3등분 박스 아래) — 중앙에 한 번만 표시
+    center_x = hrv_x + hrv_off_x + hrv_w / 2
     ax.text(center_x, ys - 0.02, recv_time_hrv,
             ha='center', va='top', fontsize=5, color='gray', zorder=2)
+    # ─────────────────────────
 
     # 4) HRV 작은 풍량 박스 + 수신 시간
     try:
         data = requests.get(api_urls['hrv']).json()
-        val  = float(data['feeds'][-1].get('field1', 0.0))
+        val = float(data['feeds'][-1].get('field1', 0.0))
     except:
         val = 0.0
 
     if val <= 10:
-        color, label = 'white','off'
+        color, label = 'white', 'off'
     elif 30 <= val <= 50:
-        color, label = 'green','150CMH'
+        color, label = 'green', '150CMH'
     elif 60 <= val <= 80:
-        color, label = 'yellow','250CMH'
+        color, label = 'yellow', '250CMH'
     else:
-        color, label = 'red','400CMH'
+        color, label = 'red', '400CMH'
 
-    ax.add_patch(patches.Rectangle((hrv_x-0.2, hrv_y-0.2), 0.4, 0.4,
+    ax.add_patch(patches.Rectangle((hrv_x - 0.2, hrv_y - 0.2), 0.4, 0.4,
                                    fill=True, facecolor=color,
                                    edgecolor='black', linewidth=1.2, zorder=5))
-    ax.text(hrv_x, hrv_y, label, ha='center', va='center', fontsize=5, zorder=6)
+    ax.text(hrv_x, hrv_y, label,
+            ha='center', va='center', fontsize=5, zorder=6)
 
     # 작은 박스 수신 시간
-    ax.text(hrv_x, hrv_y - height/2 - 0.05, recv_time_hrv,
+    ax.text(hrv_x, hrv_y - height / 2 - 0.05, recv_time_hrv,
             ha='center', va='top', fontsize=5, color='gray', zorder=6)
 
     # 5) 범례 (생략 가능)
