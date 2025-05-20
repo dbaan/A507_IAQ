@@ -134,11 +134,15 @@ def plot_seats_with_pairs(points, occupied, ax):
             ha='center', va='center', fontsize=5, zorder=2)
 
     # 단 한 번만 시간 표시 (박스 중앙 아래)
-    center_x = hrv_x + hrv_off_x + hrv_w/2
-    ax.text(center_x, ys - 0.02, recv_time_hrv,
+    _shown = False
+    if not _shown:
+        center_x = hrv_x + hrv_off_x + hrv_w / 2
+        ax.text(center_x, ys - 0.02, recv_time_hrv,
             ha='center', va='top', fontsize=5, color='gray', zorder=2)
+        _shown = True
 
     # 4) HRV 작은 풍량 박스 + 수신 시간
+    HRV_URL = "https://api.thingspeak.com/channels/2943401/feeds.json?api_key=I9HFOIOELN9CKVCS&results=2"
     try:
         data = requests.get(api_urls['hrv']).json()
         val = float(data['feeds'][-1].get('field1', 0.0))
