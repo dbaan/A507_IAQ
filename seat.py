@@ -80,9 +80,9 @@ def plot_seats_with_pairs(points, occupied, ax):
         except:
             pass
         yt = ys+height/2
-        ax.text(xs+cw*0.5, yt, f"{ta}", ha='center', va='center', fontsize=6, zorder=2)
-        ax.text(xs+cw*1.5, yt, f"{co2}", ha='center', va='center', fontsize=6, zorder=2)
-        ax.text(xs+cw*2.5, yt, f"{pm}", ha='center', va='center', fontsize=6, zorder=2)
+        ax.text(xs+cw*0.5, yt, f"{ta}", ha='center', va='center', fontsize=5, zorder=2)
+        ax.text(xs+cw*1.5, yt, f"{co2}", ha='center', va='center', fontsize=5, zorder=2)
+        ax.text(xs+cw*2.5, yt, f"{pm}", ha='center', va='center', fontsize=5, zorder=2)
 
     # 3) HRV 3등분 박스
     hrv_x,hrv_y = points['hrv']
