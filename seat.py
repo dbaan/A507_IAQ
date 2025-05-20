@@ -135,11 +135,9 @@ def plot_seats_with_pairs(points, occupied, ax):
 
     # 단 한 번만 시간 표시 (박스 중앙 아래)
     center_x = hrv_x + hrv_off_x + hrv_w / 2
-    if not _shown:
-        center_x = hrv_x + hrv_off_x + hrv_w / 2
-        ax.text(center_x, ys - 0.02, recv_time_hrv,
-                ha='center', va='top', fontsize=5,
-                color='gray', zorder=2)
+    ax.text(center_x, ys - 0.02, recv_time_hrv,
+            ha='center', va='top', fontsize=5,
+            color='gray', zorder=2)
 
 
     # 4) HRV 작은 풍량 박스 + 수신 시간
