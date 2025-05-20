@@ -25,7 +25,8 @@ api_urls = {
     ("15","16"): "https://api.thingspeak.com/channels/2943414/feeds.json?api_key=QCNGKKMQDOJ1Y0MM&results=2",
     ("17","18"): "https://api.thingspeak.com/channels/2967895/feeds.json?api_key=QNT10V4RA4YVGUHI&results=2",
     ("19","20"): "https://api.thingspeak.com/channels/2967896/feeds.json?api_key=BA9YKMHV1BFRY53S&results=2",
-    "hrv":       "https://api.thingspeak.com/channels/2943401/feeds.json?api_key=I9HFOIOELN9CKVCS&results=2"
+    "hrv":       "https://api.thingspeak.com/channels/2943401/feeds.json?api_key=I9HFOIOELN9CKVCS&results=2",
+    "hrv_energy": "https://api.thingspeak.com/channels/2768980/feeds.json?api_key=RJMLVOVFVPLS7R9R&results=2"
 }
 
 
@@ -141,9 +142,8 @@ def plot_seats_with_pairs(points, occupied, ax):
 
 
     # 4) HRV 작은 풍량 박스 + 수신 시간
-    HRV_URL = "https://api.thingspeak.com/channels/2768980/feeds.json?api_key=RJMLVOVFVPLS7R9R&results=2"
     try:
-        resp = requests.get(api_urls['hrv']).json()
+        resp = requests.get(api_urls['hrv_energy']).json()
         last = resp['feeds'][-1]
         val = float(last.get('field1', 0.0))
     except:
