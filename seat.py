@@ -98,14 +98,16 @@ def plot_seats_with_pairs(points, occupied, ax):
     hrv_x,hrv_y = points['hrv']
     hrv_off_x, hrv_w = -1.5, 1.2
     cw = hrv_w / 3
-    ys = hrv_y - h / 2
+    ys = hrv_y - pair_height / 2
 
-    ax.add_patch(patches.Rectangle((hrv_x + hrv_off_x, ys),
-                                   hrv_w, h,
-                                   fill=False, edgecolor='black', linewidth=1.2, zorder=1))
+    ax.add_patch(patches.Rectangle(
+        (hrv_x + hrv_off_x, ys),
+        hrv_w, pair_height,
+        fill=False, edgecolor='black', linewidth=1.2, zorder=1))
     for i in (1,2):
-        ax.plot([hrv_x+off_x+cw*i]*2,
-                [ys, ys + h],
+        ax.plot(
+            [hrv_x + hrv_off_x + cw * i] * 2,
+            [ys, ys + pair_height],
                 color='black', linewidth=1.0, zorder=1)
 
     ta=co2=pm="N/A"
