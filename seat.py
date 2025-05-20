@@ -104,3 +104,30 @@ def plot_seats_with_pairs(points, occupied, ax):
     ax.text(hrv_x+off_x+cw*0.5, yt, f"{ta}", ha='center', va='center', fontsize=6, zorder=2)
     ax.text(hrv_x+off_x+cw*1.5, yt, f"{co2}", ha='center', va='center', fontsize=6, zorder=2)
     ax.text(hrv_x+off_x+cw*2.5, yt, f"{pm}", ha='center', va='center', fontsize=6, zorder=2)
+
+
+    # 4) HRV 작은 풍량 박스 (always on)
+    # 수정된 4) HRV 작은 풍량 박스 부분 (field1 값이 실수 문자열일 때도 처리)
+    HRV_URL = "https://api.thingspeak.com/channels/2943401/feeds.json?api_key=I9HFOIOELN9CKVCS&results=2"
+    try:
+        data = requests.get(HRV_URL).json()
+        val = float(data['feeds'][-1].get('field1', 0.0))
+    except Exception as e:
+        print("HRV API 호출 에러:", e)
+        val = 0.0
+
+    if val <= 10:
+        color, label = 'white', 'off'
+    elif 11 <= val <= 50:
+        color, label = 'green', '150CMH'
+    elif 51 <= val <= 80:
+        color, label = 'yellow', '250CMH'
+    elif val >= 80:
+        color, label = 'red', '400CMH'
+    else:
+        color, label = 'lightgray', '?'
+
+    ax.add_patch(patches.Rectangle((hrv_x - 0.2, hrv_y - 0.2), 0.4, 0.4,
+                                   fill=True, facecolor=color,
+                                   edgecolor='black', linewidth=1.2, zorder=4))
+    ax.text(hrv_x, hrv_y, label, ha='center', va='center', fontsize=5, zorder=5)
