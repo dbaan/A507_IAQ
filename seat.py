@@ -32,7 +32,7 @@ api_urls = {
 def plot_seats_with_pairs(points, occupied, ax):
     # 공통 상수
     pair_offset_y = 0.4
-    pair_height   = 0.4
+    height       = 0.4   # 이전에 pair_height 역할
 
     # 배경
     bg_img = plt.imread("A507.png")
@@ -61,12 +61,12 @@ def plot_seats_with_pairs(points, occupied, ax):
         xs, ys = left-0.2, y1 + pair_offset_y
 
         # 외곽 + 분할선
-        ax.add_patch(patches.Rectangle((xs, ys), width, pair_height,
+        ax.add_patch(patches.Rectangle((xs, ys), width, height,
                                        fill=False, edgecolor='black',
                                        linewidth=1.2, zorder=1))
         cw = width/3
         for i in (1,2):
-            ax.plot([xs+cw*i]*2, [ys, ys+pair_height],
+            ax.plot([xs+cw*i]*2, [ys, ys+height],
                     color='black', linewidth=1, zorder=1)
 
         # API 값과 수신 시간
@@ -75,17 +75,17 @@ def plot_seats_with_pairs(points, occupied, ax):
         try:
             resp = requests.get(api_urls[pair]).json()
             last = resp['feeds'][-1]
-            ta = last.get('field1', ta)
-            co2 = last.get('field4', co2)
-            pm = last.get('field3', pm)
-            ts = last.get('created_at')
+            ta   = last.get('field1', ta)
+            co2  = last.get('field4', co2)
+            pm   = last.get('field3', pm)
+            ts   = last.get('created_at')
             if ts:
                 recv_time = ts.split("T")[1].replace("Z","")
         except:
             pass
 
         # 값 표시
-        yt = ys + pair_height/2
+        yt = ys + height/2
         ax.text(xs+cw*0.5, yt, f"{ta}",  ha='center', va='center', fontsize=5, zorder=2)
         ax.text(xs+cw*1.5, yt, f"{co2}", ha='center', va='center', fontsize=5, zorder=2)
         ax.text(xs+cw*2.5, yt, f"{pm}",  ha='center', va='center', fontsize=5, zorder=2)
@@ -95,18 +95,18 @@ def plot_seats_with_pairs(points, occupied, ax):
                 ha='left', va='bottom', fontsize=5, color='gray', zorder=2)
 
     # 3) HRV 3등분 박스 + 값·수신 시간
-    hrv_x, hrv_y = points['hrv']
+    hrv_x, hrv_y   = points['hrv']
     hrv_off_x, hrv_w = -1.5, 1.2
-    cw = hrv_w / 3
-    ys = hrv_y - pair_height/2
+    cw             = hrv_w / 3
+    ys             = hrv_y - height/2
 
     ax.add_patch(patches.Rectangle((hrv_x+hrv_off_x, ys),
-                                   hrv_w, pair_height,
+                                   hrv_w, height,
                                    fill=False, edgecolor='black',
                                    linewidth=1.2, zorder=1))
     for i in (1,2):
         ax.plot([hrv_x+hrv_off_x+cw*i]*2,
-                [ys, ys+pair_height],
+                [ys, ys+height],
                 color='black', linewidth=1, zorder=1)
 
     ta = co2 = pm = "N/A"
@@ -114,10 +114,10 @@ def plot_seats_with_pairs(points, occupied, ax):
     try:
         resp = requests.get(api_urls['hrv']).json()
         last = resp['feeds'][-1]
-        ta  = last.get('field1', ta)
-        co2 = last.get('field4', co2)
-        pm  = last.get('field3', pm)
-        ts  = last.get('created_at')
+        ta   = last.get('field1', ta)
+        co2  = last.get('field4', co2)
+        pm   = last.get('field3', pm)
+        ts   = last.get('created_at')
         if ts:
             recv_time_hrv = ts.split("T")[1].replace("Z","")
     except:
@@ -126,7 +126,7 @@ def plot_seats_with_pairs(points, occupied, ax):
     # 값 표시
     ax.text(hrv_x+hrv_off_x+cw*0.5, hrv_y, f"{ta}",  ha='center', va='center', fontsize=5, zorder=2)
     ax.text(hrv_x+hrv_off_x+cw*1.5, hrv_y, f"{co2}", ha='center', va='center', fontsize=5, zorder=2)
-    ax.text(hrv_x+hrv_off_x+cw*2.5, hrv_y, f"{pm}", ha='center', va='center', fontsize=5, zorder=2)
+    ax.text(hrv_x+hrv_off_x+cw*2.5, hrv_y, f"{pm}",  ha='center', va='center', fontsize=5, zorder=2)
 
     # 수신 시간 (3등분 박스 아래)
     for i in range(3):
@@ -137,7 +137,7 @@ def plot_seats_with_pairs(points, occupied, ax):
     # 4) HRV 작은 풍량 박스 + 수신 시간
     try:
         data = requests.get(api_urls['hrv']).json()
-        val = float(data['feeds'][-1].get('field1', 0.0))
+        val  = float(data['feeds'][-1].get('field1', 0.0))
     except:
         val = 0.0
 
@@ -155,15 +155,16 @@ def plot_seats_with_pairs(points, occupied, ax):
                                    edgecolor='black', linewidth=1.2, zorder=5))
     ax.text(hrv_x, hrv_y, label, ha='center', va='center', fontsize=5, zorder=6)
 
-    ax.text(hrv_x, hrv_y - 0.25, recv_time_hrv,
+    # 작은 박스 수신 시간
+    ax.text(hrv_x, hrv_y - height/2 - 0.05, recv_time_hrv,
             ha='center', va='top', fontsize=5, color='gray', zorder=6)
 
-    # 5) 범례
+    # 5) 범례 (생략 가능)
     legend_ax = ax.figure.add_axes([0.40, 0.02, 0.3, 0.12])
     legend_ax.axis('off')
     from matplotlib.patches import Rectangle as LegRect
     lw, lh = 0.8, 0.3
-    cellw = lw/3
+    cellw   = lw/3
     legend_ax.add_patch(LegRect((0,0.4), cellw, lh, facecolor='white', edgecolor='black'))
     legend_ax.add_patch(LegRect((cellw,0.4), cellw, lh, facecolor='white', edgecolor='black'))
     legend_ax.add_patch(LegRect((2*cellw,0.4), cellw, lh, facecolor='white', edgecolor='black'))
@@ -171,6 +172,6 @@ def plot_seats_with_pairs(points, occupied, ax):
     legend_ax.text(cellw*1.5, 0.15, "CO2(ppm)", ha='center', va='center', fontsize=6)
     legend_ax.text(cellw*2.5, 0.15, "PM2.5(㎍/㎥)", ha='center', va='center', fontsize=6)
 
-    ax.set_xlim(0,6)
-    ax.set_ylim(0,8)
+    ax.set_xlim(0, 6)
+    ax.set_ylim(0, 8)
     ax.axis('off')
