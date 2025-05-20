@@ -2,10 +2,7 @@ import matplotlib.pyplot as plt
 import matplotlib.patches as patches
 import requests
 
-def plot_seats_with_pairs(points):
-    # 0) 재실 좌석 입력
-    occupied_input = input("재실 좌석 번호를 쉼표로 구분하여 입력하세요 (예: 1,2,4,6,7): ")
-    occupied = set(s.strip() for s in occupied_input.split(",") if s.strip())
+def plot_seats_with_pairs(points, occupied, ax):
 
     # API URL 매핑
     api_urls = {
