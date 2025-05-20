@@ -10,7 +10,7 @@ st_autorefresh(interval=30000, key="datarefresh")
 st.title("A507 실시간 좌석 및 공기질 모니터링")
 
 # 재실 좌석을 코드에 직접 정의 (필요 시 수정)
-occupied = {"1", "2", "4", "6", "7"}
+occupied = {"3", "5", "7", "9", "13", "15", "17", "19"}
 
 # 플롯 생성
 fig, ax = plt.subplots(figsize=(6, 5))
