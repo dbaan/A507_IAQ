@@ -134,28 +134,30 @@ def plot_seats_with_pairs(points, occupied, ax):
             ha='center', va='center', fontsize=5, zorder=2)
 
     # 단 한 번만 시간 표시 (박스 중앙 아래)
-    _shown = False
+    center_x = hrv_x + hrv_off_x + hrv_w / 2
     if not _shown:
         center_x = hrv_x + hrv_off_x + hrv_w / 2
         ax.text(center_x, ys - 0.02, recv_time_hrv,
-            ha='center', va='top', fontsize=5, color='gray', zorder=2)
-        _shown = True
+                ha='center', va='top', fontsize=5,
+                color='gray', zorder=2)
+
 
     # 4) HRV 작은 풍량 박스 + 수신 시간
-    HRV_URL = "https://api.thingspeak.com/channels/2943401/feeds.json?api_key=I9HFOIOELN9CKVCS&results=2"
+    HRV_URL = "https://api.thingspeak.com/channels/2768980/feeds.json?api_key=RJMLVOVFVPLS7R9R&results=2"
     try:
-        data = requests.get(api_urls['hrv']).json()
-        val = float(data['feeds'][-1].get('field1', 0.0))
+        resp = requests.get(api_urls['hrv']).json()
+        last = resp['feeds'][-1]
+        val = float(last.get('field1', 0.0))
     except:
         val = 0.0
 
     if val <= 10:
         color, label = 'white', 'off'
-    elif 11 <= val <= 50:
+    elif val <= 50:
         color, label = 'green', '150CMH'
-    elif 51 <= val <= 80:
+    elif val <= 80:
         color, label = 'yellow', '250CMH'
-    elif val >= 810:
+    else:
         color, label = 'red', '400CMH'
 
     ax.add_patch(patches.Rectangle((hrv_x - 0.2, hrv_y - 0.2), 0.4, 0.4,
