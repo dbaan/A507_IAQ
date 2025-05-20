@@ -1,8 +1,9 @@
-import stream_run as st
+import streamlit as st
 from streamlit_autorefresh import st_autorefresh
 import matplotlib.pyplot as plt
 
 from seat import plot_seats_with_pairs, csp_points
+
 
 # 30초 자동 새로고침
 st_autorefresh(interval=30000, key="datarefresh")
