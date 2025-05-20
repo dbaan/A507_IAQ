@@ -101,9 +101,9 @@ def plot_seats_with_pairs(points, occupied, ax):
     except:
         pass
     yt = hrv_y
-    ax.text(hrv_x+off_x+cw*0.5, yt, f"{ta}", ha='center', va='center', fontsize=6, zorder=2)
-    ax.text(hrv_x+off_x+cw*1.5, yt, f"{co2}", ha='center', va='center', fontsize=6, zorder=2)
-    ax.text(hrv_x+off_x+cw*2.5, yt, f"{pm}", ha='center', va='center', fontsize=6, zorder=2)
+    ax.text(hrv_x+off_x+cw*0.5, yt, f"{ta}", ha='center', va='center', fontsize=5, zorder=2)
+    ax.text(hrv_x+off_x+cw*1.5, yt, f"{co2}", ha='center', va='center', fontsize=5, zorder=2)
+    ax.text(hrv_x+off_x+cw*2.5, yt, f"{pm}", ha='center', va='center', fontsize=5, zorder=2)
 
 
     # 4) HRV 작은 풍량 박스 (always on)
@@ -140,11 +140,12 @@ def plot_seats_with_pairs(points, occupied, ax):
     cellw = lw / 3
     legend_ax.add_patch(LegRect((0, 0.4), cellw, lh, facecolor='white', edgecolor='black'))
     legend_ax.add_patch(LegRect((cellw, 0.4), cellw, lh, facecolor='white', edgecolor='black'))
-    legend_ax.add_patch(LegRect((2 * cellw, 0.4), cellw, lh, facecolor='white', edgecolor='black'))
-    legend_ax.text(cellw / 2, 0.15, "Ta(℃)", ha='center', va='center', fontsize=8)
-    legend_ax.text(cellw * 1.5, 0.15, "CO2(ppm)", ha='center', va='center', fontsize=8)
-    legend_ax.text(cellw * 2.5, 0.15, "PM2.5(㎍/㎥)", ha='center', va='center', fontsize=8)
+    legend_ax.add_patch(LegRect((2*cellw, 0.4), cellw, lh, facecolor='white', edgecolor='black'))
+    legend_ax.text(cellw/2, 0.15, "Ta(℃)", ha='center', va='center', fontsize=8)
+    legend_ax.text(cellw*1.5, 0.15, "CO2(ppm)", ha='center', va='center', fontsize=8)
+    legend_ax.text(cellw*2.5, 0.15, "PM2.5(㎍/㎥)", ha='center', va='center', fontsize=8)
 
     ax.set_xlim(0, 6)
     ax.set_ylim(0, 8)
     ax.axis('off')
+
