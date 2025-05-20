@@ -131,3 +131,20 @@ def plot_seats_with_pairs(points, occupied, ax):
                                    fill=True, facecolor=color,
                                    edgecolor='black', linewidth=1.2, zorder=4))
     ax.text(hrv_x, hrv_y, label, ha='center', va='center', fontsize=5, zorder=5)
+
+    # 5) 범례 추가 (오른쪽 하단)
+    legend_ax = ax.figure.add_axes([0.60, 0.02, 0.3, 0.12])
+    legend_ax.axis('off')
+    from matplotlib.patches import Rectangle as LegRect
+    lw, lh = 0.9, 0.3
+    cellw = lw / 3
+    legend_ax.add_patch(LegRect((0, 0.4), cellw, lh, facecolor='white', edgecolor='black'))
+    legend_ax.add_patch(LegRect((cellw, 0.4), cellw, lh, facecolor='white', edgecolor='black'))
+    legend_ax.add_patch(LegRect((2 * cellw, 0.4), cellw, lh, facecolor='white', edgecolor='black'))
+    legend_ax.text(cellw / 2, 0.15, "Ta(℃)", ha='center', va='center', fontsize=8)
+    legend_ax.text(cellw * 1.5, 0.15, "CO2(ppm)", ha='center', va='center', fontsize=8)
+    legend_ax.text(cellw * 2.5, 0.15, "PM2.5(㎍/㎥)", ha='center', va='center', fontsize=8)
+
+    ax.set_xlim(0, 6)
+    ax.set_ylim(0, 8)
+    ax.axis('off')
