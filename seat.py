@@ -114,7 +114,9 @@ def plot_seats_with_pairs(points, occupied, ax):
     try:
         resp = requests.get(api_urls['hrv']).json()
         last = resp['feeds'][-1]
+        ta   = last.get('field1', ta)
         co2  = last.get('field4', co2)
+        pm   = last.get('field3', pm)
         ts   = last.get('created_at')
         if ts:
             recv_time_hrv = ts.split("T")[1].replace("Z","")
@@ -127,10 +129,9 @@ def plot_seats_with_pairs(points, occupied, ax):
     ax.text(hrv_x+hrv_off_x+cw*2.5, hrv_y, f"{pm}",  ha='center', va='center', fontsize=5, zorder=2)
 
     # 수신 시간 (3등분 박스 아래)
-    for i in range(3):
-        tx = hrv_x + hrv_off_x + cw*(i+0.5)
-        ax.text(tx, ys-0.02, recv_time_hrv,
-                ha='center', va='top', fontsize=5, color='gray', zorder=2)
+    center_x = hrv_x + hrv_off_x + hrv_w/2
+    ax.text(center_x, ys - 0.02, recv_time_hrv,
+            ha='center', va='top', fontsize=5, color='gray', zorder=2)
 
     # 4) HRV 작은 풍량 박스 + 수신 시간
     try:
