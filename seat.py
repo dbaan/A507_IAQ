@@ -29,14 +29,14 @@ api_urls = {
 }
 
 
-def plot_seats_with_pairs(points, occupied, ax):
++def plot_seats_with_pairs(points, occupied, ax):
     """
     points: 좌표 딕셔너리
     occupied: 재실자 좌석 번호의 집합 (예: {"1","2","4"})
     ax: matplotlib Axes
     """
     # 배경 이미지
-    bg_img = plt.imread(r"C:\Users\권단비\PycharmProjects\A507_visualization\A507.png")
+    bg_img = plt.imread("A507.png")
     ax.imshow(bg_img, extent=[0,6,0,8], zorder=0)
     ax.set_aspect('equal', adjustable='box')
 
