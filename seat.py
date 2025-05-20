@@ -151,11 +151,11 @@ def plot_seats_with_pairs(points, occupied, ax):
 
     if val <= 10:
         color, label = 'white', 'off'
-    elif 30 <= val <= 50:
+    elif 11 <= val <= 50:
         color, label = 'green', '150CMH'
-    elif 60 <= val <= 80:
+    elif 51 <= val <= 80:
         color, label = 'yellow', '250CMH'
-    else:
+    elif val >= 810:
         color, label = 'red', '400CMH'
 
     ax.add_patch(patches.Rectangle((hrv_x - 0.2, hrv_y - 0.2), 0.4, 0.4,
