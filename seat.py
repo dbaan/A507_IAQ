@@ -29,7 +29,7 @@ api_urls = {
 }
 
 
-+def plot_seats_with_pairs(points, occupied, ax):
+def plot_seats_with_pairs(points, occupied, ax):
     """
     points: 좌표 딕셔너리
     occupied: 재실자 좌석 번호의 집합 (예: {"1","2","4"})
